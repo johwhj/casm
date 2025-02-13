@@ -50,7 +50,7 @@ add(int x, int y)
 	mov eax, x;
 	add eax, y;
 
-	return;
+	ret;
 }
 ```
 
@@ -104,7 +104,13 @@ git clone https://codeberg.org/johwhj/casm.git
 cd casm 
 ```
 
-3. **Install:** (You might need root privileges)
+3. **Build:**
+
+```sh
+make x86-64
+```
+
+4. **Install:** (You might need root privileges)
 
 ```sh
 make install
