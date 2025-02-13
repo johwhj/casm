@@ -8,35 +8,29 @@ Features
 
 **Functional Features:**
 
-* It supports C-like syntax and function.
-* It could define function in C header file.
+- Support C header file parsing.
+- Support C-like function definition and call.
+- Support ELF file format.
+- Support x86-64.
 
-**Non-Functional Features:**
+**Non-functional Features:**
 
-* It generates ELF object file.
-* It works on Unix-like systems.
-
-**Supported CPUs:**
-
-* x86-64
+- Written in standard C89.
 
 Design
 ------
 
-CASM uses Intel-style syntax which places destination register before sources.
-
-`opcode dest src1, src2;`
-
-For instance, assigning zero in register `rax` would look like:
-
-`mov rax, 0;`
+CASM is designed to help programmers use familiar C-like syntax when writing
+assembly language. It allows programmers to define functions, so they can
+organize their code into reusable parts. They can also define functions that are
+declared in C header files, making it easy to call these functions from C code.
 
 Usage
 -----
 
-The assembly language can be linked with C like below.
-
 **Header file (`add.h`)**
+
+This header file declares a function that returns addition of two integers.
 
 ```c
 int add(int, int);
@@ -44,21 +38,25 @@ int add(int, int);
 
 **Assembly code (`add.s`)**
 
-```as
+In this assembly code, the function is defined using a C-like syntax. The setup
+for the stack is done automatically.
+
+```asm
 #include "add.h"
 
-/* assembly function to add two integers */
 int
 add(int x, int y)
 {
-	mov eax, x; /* load x into eax */
-	add eax, y; /* add y to eax */
+	mov eax, x;
+	add eax, y;
 
-	return;     /* return value is in eax */
+	return;
 }
 ```
 
 **C code (`main.c`)**
+
+In this C code, the `add` function can be called just like any other C function.
 
 ```c
 #include "add.h"
@@ -81,21 +79,11 @@ main(void)
 
 **Compile and link**
 
-1. **Assemble the `add.s`**
+To create the executable program, use these commands.
 
 ```sh
 casm add.s
-```
-
-2. **Compile the `main.c`**
-
-```sh
 cc -c main.c
-```
-
-3. **Link them into one executable**
-
-```sh
 cc -o add add.o main.o
 ```
 
