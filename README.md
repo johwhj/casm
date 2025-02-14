@@ -119,4 +119,4 @@ make install
 License
 -------
 
-dslibc by Woohyun Joh is marked with CC0 1.0.
+casm by Woohyun Joh is marked with CC0 1.0.
