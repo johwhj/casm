@@ -1,8 +1,5 @@
 include config.mk
 
-CC = c89
-CFLAGS = -Wall -Wextra -Wpedantic -Werror
-
 all: help
 
 help:
@@ -13,8 +10,16 @@ help:
 	@echo "       make uninstall"
 
 x86-64:
-	$(CC) $(CFLAGS) -c src/casm.c src/$@.c src/lex.c
-	$(CC) -o casm casm.o $@.o
+	$(CC) $(CFLAGS) -c src/casm.c src/$@.c
+	$(CC) -o casm casm.o
 
 clean:
 	rm -f casm casm.o *.o
+
+dist: clean
+	mkdir -p casm-$(VERSION)
+
+install:
+	mkdir -p $(PREFIX)/bin
+	cp -f casm $(PREFIX)/bin
+	chmod 755 $(PREFIX)/bin/casm
