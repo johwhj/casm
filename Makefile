@@ -1,5 +1,8 @@
 include config.mk
 
+SRC = src/casm.c src/lexer.c src/utils.c
+OBJ = *.o
+
 all: help
 
 help:
@@ -10,11 +13,11 @@ help:
 	@echo "       make uninstall"
 
 x86-64:
-	$(CC) $(CFLAGS) -c src/casm.c src/$@.c
-	$(CC) -o casm casm.o
+	$(CC) $(CFLAGS) -c $(SRC) src/$@.c
+	$(CC) -o casm $(OBJ)
 
 clean:
-	rm -f casm casm.o *.o
+	rm -f casm $(OBJ)
 
 dist: clean
 	mkdir -p casm-$(VERSION)
@@ -23,3 +26,6 @@ install:
 	mkdir -p $(PREFIX)/bin
 	cp -f casm $(PREFIX)/bin
 	chmod 755 $(PREFIX)/bin/casm
+
+uninstall:
+	rm -f $(PREFIX)/bin/casm
