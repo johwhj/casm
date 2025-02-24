@@ -17,6 +17,13 @@
 
 #include <stdio.h>
 
-int generate(FILE *, FILE *, char *);
+struct casm {
+	FILE *asm, *obj;
+	char *name;
+};
+
+struct casm casm_new(char *);
+int casm_assemble(struct casm *); /* platform specific */
+void casm_free(struct casm *);
 
 #endif
