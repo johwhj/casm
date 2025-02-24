@@ -9,37 +9,31 @@ Features
 **Functional Features:**
 
 - Support C header file parsing.
-- Support C-like function definition and call.
+- Support C function definition.
 - Support ELF file format.
-- Support x86-64.
+- Support x86-64 System V AMD64 ABI.
 
 **Non-functional Features:**
 
-- Written in standard C89.
+- Written in standard C89(ISO/IEC 9899:1990).
 
 Design
 ------
 
-CASM is designed to help programmers use familiar C-like syntax when writing
-assembly language. It allows programmers to define functions, so they can
-organize their code into reusable parts. They can also define functions that are
-declared in C header files, making it easy to call these functions from C code.
+CASM is created to make it easy for programmers to use a familiar C-like style
+when writing assembly code. This helps them define and call functions in a way
+that feels similar to C programming. CASM can read C header files, which allows
+users to declare functions that can be used in C code.
 
-Usage
------
-
-**Header file (`add.h`)**
-
-This header file declares a function that returns addition of two integers.
+For example, consider a simple header file `add.h` that declares a function for
+adding two integers:
 
 ```c
 int add(int, int);
 ```
 
-**Assembly code (`add.s`)**
-
-In this assembly code, the function is defined using a C-like syntax. The setup
-for the stack is done automatically.
+In the assembly code `add.s`, the function is defined using a C-like syntax,
+where the setup for the stack is handled automatically:
 
 ```asm
 #include "add.h"
@@ -47,16 +41,18 @@ for the stack is done automatically.
 int
 add(int x, int y)
 {
-	mov eax, x;
-	add eax, y;
+	mov eax, x;  /* Move the first argument into eax */
+	add eax, y;  /* Add the second argument to eax */
 
-	ret;
+	ret;         /* Return to where the function is called */
 }
 ```
 
-**C code (`main.c`)**
+This design allows programmers to write assembly code that is clear and
+organized, similar to higher-level programming languages.
 
-In this C code, the `add` function can be called just like any other C function.
+In the C code `main.c`, the `add` function can be called just like  any other C
+function:
 
 ```c
 #include "add.h"
@@ -77,9 +73,15 @@ main(void)
 }
 ```
 
-**Compile and link**
+By handling stack setup automatically and offering a simple way to define
+functions, CASM helps programmers work more efficiently and makes it easier for
+those who are new to assembly language. This ensures that developers can write
+effective assembly code while maintaining clarity and organization.
 
-To create the executable program, use these commands.
+Usage
+-----
+
+To create the executable program with above example, use these commands.
 
 ```sh
 casm add.s
@@ -101,7 +103,7 @@ git clone https://codeberg.org/johwhj/casm.git
 2. **Go to the project directory:**
 
 ```sh
-cd casm 
+cd casm
 ```
 
 3. **Build:**
