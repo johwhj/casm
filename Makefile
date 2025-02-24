@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = src/casm.c src/lexer.c src/utils.c
+SRC = src/casm.c src/lexer.c
 OBJ = *.o
 
 all: help
