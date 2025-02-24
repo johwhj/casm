@@ -10,12 +10,14 @@ Features
 
 - Support C header file parsing.
 - Support C function definition.
+- Support C-like global variable declaration and initialization.
 - Support ELF file format.
 - Support x86-64 System V AMD64 ABI.
 
 **Non-functional Features:**
 
 - Written in standard C89(ISO/IEC 9899:1990).
+- Work on Unix-like operating systems.
 
 Design
 ------
