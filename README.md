@@ -25,7 +25,7 @@ Design
 CASM is created to make it easy for programmers to use a familiar C-like style
 when writing assembly code. This helps them define and call functions in a way
 that feels similar to C programming. CASM can read C header files, which allows
-users to declare functions that can be used in C code.
+users to define functions that can be used in C code.
 
 For example, consider a simple header file `add.h` that declares a function for
 adding two integers:
