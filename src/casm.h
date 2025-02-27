@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 struct casm {
-	FILE *asm, *obj;
+	FILE *src, *obj;
 	char *name;
 };
 

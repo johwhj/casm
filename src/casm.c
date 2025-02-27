@@ -44,7 +44,7 @@ casm_new(char *file)
 		crash("%s: No file extension: '%s'\n", name, file);
 	if (strchr(dot, 's') == NULL)
 		crash("%s: Invalid extension: '%s'\n", name, file);
-	if ((casm.asm = fopen(casm.name, "r")) == NULL)
+	if ((casm.src = fopen(casm.name, "r")) == NULL)
 		crash("%s: No such file: '%s'\n", name, file);
 
 	dot[1] = 'o';
@@ -60,7 +60,7 @@ casm_new(char *file)
 void
 casm_free(struct casm *casm)
 {
-	fclose(casm->asm);
+	fclose(casm->src);
 	fclose(casm->obj);
 }
 
