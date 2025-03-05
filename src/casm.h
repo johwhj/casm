@@ -15,15 +15,26 @@
 #ifndef _CASM_H
 #define _CASM_H
 
+#define PROGNAME "casm"
+#define BUF_SIZE 4096
+
 #include <stdio.h>
 
 struct casm {
 	FILE *src, *obj;
-	char *name;
+	long col, row;
+	size_t idx, len;
+	char buf[BUF_SIZE]; /* contains \0 at BUF_SIZE - 1 */
+	const char *name;
 };
 
-struct casm casm_new(char *);
-int casm_assemble(struct casm *); /* platform specific */
-void casm_free(struct casm *);
+int casm_init(struct casm *, const char *); /* init.c */
+int casm_codegen(struct casm *);            /* x86-64.c */
+char *casm_token(struct casm *);            /* token.c */
+void casm_free(struct casm *);              /* free.c */
+
+/* utils.c */
+void usage(void);
+int error(const char *, ...);
 
 #endif
