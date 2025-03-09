@@ -15,6 +15,12 @@
 #include "casm.h"
 #include <string.h>
 
+/*
+ * open assembly file and create object file
+ *
+ * returns 0 on success, 1 if there is no extension, the extention is not 's' or
+ * cannot create object file.
+ */
 int
 casm_init(struct casm *casm, const char *name)
 {
@@ -31,11 +37,8 @@ casm_init(struct casm *casm, const char *name)
 	if ((casm->obj = fopen(name, "w")) == NULL)
 		return error("Failed to create object file: '%s'", name);
 
-	dot[0] = 's';
+	dot[1] = 's';
 	casm->name = name;
-	casm->col = casm->row = 0;
-	casm->idx = casm->len = 0;
-	casm->buf[BUF_SIZE - 1] = '\0';
 
 	return 0;
 }
