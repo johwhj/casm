@@ -17,12 +17,12 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-void
+int
 usage(void)
 {
 	(void)fprintf(stderr, "usage: "PROGNAME" file...\n");
 
-	exit(EXIT_FAILURE);
+	return 1;
 }
 
 int

@@ -34,7 +34,7 @@ char *casm_token(struct casm *);            /* token.c */
 void casm_free(struct casm *);              /* free.c */
 
 /* utils.c */
-void usage(void);
+int usage(void);
 int error(const char *, ...);
 
 #endif
