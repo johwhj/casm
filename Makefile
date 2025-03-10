@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = src/main.c src/init.c src/utils.c src/free.c
+SRC = src/main.c src/casm.c src/utils.c src/lexer.c
 OBJ = *.o
 
 all: help
@@ -21,6 +21,9 @@ clean:
 
 dist: clean
 	mkdir -p casm-$(VERSION)
+	cp -r LICENSE Makefile README.md config.mk src/ casm-$(VERSION)
+	tar -cf - casm-$(VERSION) | xz > casm-$(VERSION).tar.xz
+	rm -rf casm-$(VERSION)
 
 install:
 	mkdir -p $(PREFIX)/bin
