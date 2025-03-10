@@ -23,7 +23,7 @@ main(int argc, char *argv[])
 	state = 0;
 
 	if (argc == 1)
-		usage();
+		return usage();
 	for (--argc, ++argv; argc; --argc, ++argv) {
 		state |= casm_init(&casm, *argv);
 		state |= casm_codegen(&casm);
