@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = src/main.c src/init.c src/utils.c src/token.c src/free.c
+SRC = src/main.c src/init.c src/utils.c src/free.c
 OBJ = *.o
 
 all: help
