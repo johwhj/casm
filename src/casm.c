@@ -13,6 +13,7 @@
  */
 
 #include "casm.h"
+#include <stdio.h>
 #include <string.h>
 
 /*
@@ -41,4 +42,16 @@ casm_init(struct casm *casm, const char *name)
 	casm->name = name;
 
 	return 0;
+}
+
+/*
+ * close files
+ */
+void
+casm_free(struct casm *casm)
+{
+	if (casm->src)
+		fclose(casm->src);
+	if (casm->obj)
+		fclose(casm->obj);
 }
