@@ -24,9 +24,42 @@ struct casm {
 	FILE *src, *obj;
 };
 
-int casm_init(struct casm *, const char *); /* init.c */
-int casm_codegen(struct casm *);            /* x86-64.c */
-void casm_free(struct casm *);              /* free.c */
+/* casm.c */
+int casm_init(struct casm *, const char *);
+void casm_free(struct casm *);
+
+/* x86-64.c */
+int casm_codegen(struct casm *);
+
+enum token_type {
+	TOKEN_TYPE,
+	TOKEN_NAME,
+	TOKEN_LPAR,
+	TOKEN_RPAR,
+	TOKEN_COMMA,
+	TOKEN_ASSIGN,
+	TOKEN_LBRACE,
+	TOKEN_RBRACE,
+	TOKEN_IMMEDIATE,
+	TOKEN_SEMICOLON,
+	TOKEN_ERROR,
+	TOKEN_EOF
+};
+
+struct token {
+	const char *str;
+	const enum token_type type;
+};
+
+struct lexer {
+	FILE *fp;
+	char buf[BUFSIZ];
+	size_t col, row, cur;
+};
+
+/* lexer.c */
+struct lexer lexer_new(FILE *);
+struct token lexer_token(struct lexer *);
 
 /* utils.c */
 int usage(void);
