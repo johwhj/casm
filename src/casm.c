@@ -18,9 +18,6 @@
 
 /*
  * open assembly file and create object file
- *
- * returns 0 on success, 1 if there is no extension, the extention is not 's' or
- * cannot create object file.
  */
 int
 casm_init(struct casm *casm, const char *name)
