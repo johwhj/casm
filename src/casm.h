@@ -25,27 +25,25 @@ struct casm {
 	FILE *src, *obj;
 };
 
-enum token_type {
-	TOKEN_TYPE,
-	TOKEN_NAME,
-	TOKEN_LPAR = '(',
-	TOKEN_RPAR = ')',
-	TOKEN_COMMA = ',',
-	TOKEN_ASSIGN = '=',
-	TOKEN_LBRACE = '{',
-	TOKEN_RBRACE = '}',
-	TOKEN_SEMICOLON = ';',
-	TOKEN_OPERATOR,
-	TOKEN_REGISTER,
-	TOKEN_NUMBER,
-	TOKEN_STRING,
-	TOKEN_ERROR,
-	TOKEN_EOF
-};
-
 struct token {
-	const char *str;
-	const enum token_type type;
+	char *str;
+	enum {
+		TOKEN_TYPE,
+		TOKEN_NAME,
+		TOKEN_LPAR = '(',
+		TOKEN_RPAR = ')',
+		TOKEN_COMMA = ',',
+		TOKEN_ASSIGN = '=',
+		TOKEN_LBRACE = '{',
+		TOKEN_RBRACE = '}',
+		TOKEN_SEMICOLON = ';',
+		TOKEN_OPERATOR,
+		TOKEN_REGISTER,
+		TOKEN_NUMBER,
+		TOKEN_STRING,
+		TOKEN_ERROR,
+		TOKEN_EOF
+	} token_type;
 };
 
 struct lexer {
