@@ -26,8 +26,8 @@ struct casm {
 };
 
 struct token {
-	char *str;
-	enum {
+	const char *str;
+	const enum {
 		TOKEN_TYPE,
 		TOKEN_NAME,
 		TOKEN_LPAR = '(',
@@ -59,7 +59,7 @@ int casm_init(struct casm *, const char *);
 void casm_free(struct casm *);
 
 /* x86-64.c */
-int casm_codegen(struct casm *);
+int codegen(struct casm *);
 
 /* lexer.c */
 struct lexer lexer_new(FILE *);
