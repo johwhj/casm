@@ -34,6 +34,8 @@ enum token_type {
 	TOKEN_ASSIGN = '=',
 	TOKEN_LBRACE = '{',
 	TOKEN_RBRACE = '}',
+	TOKEN_LBRACKET = '[',
+	TOKEN_RBRACKET = ']',
 	TOKEN_SEMICOLON = ';',
 	TOKEN_INTEGER,
 	TOKEN_STRING,
