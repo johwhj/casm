@@ -48,11 +48,8 @@ struct token {
 };
 
 struct lexer {
-	FILE *fp;
+	FILE *src;
 	size_t col, row;
-
-	char buf[BUF_SIZE];
-	size_t cur, len;
 };
 
 /* casm.c */
