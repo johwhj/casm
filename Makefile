@@ -17,7 +17,7 @@ x86-64:
 	$(CC) -o casm $(OBJ)
 
 clean:
-	rm -f casm $(OBJ)
+	rm -f casm a.out $(OBJ)
 
 dist: clean
 	mkdir -p casm-$(VERSION)
