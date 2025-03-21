@@ -14,11 +14,13 @@
 
 #include "casm.h"
 #include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
 
 static const char *type_map[] = {
 	"char", "short", "int", "long", "unsigned",
-	"float", "double", NULL
+	"float", "double",
+	NULL
 };
 
 static struct token
@@ -41,55 +43,44 @@ token_type(const char *str)
 		if (strcmp(str, type_map[i]) == 0)
 			return TOKEN_TYPE;
 
-	return TOKEN_NAME;
+	return TOKEN_UNKNOWN;
 }
 
-struct lexer
-lexer_new(FILE *src)
+int
+lexer_init(struct lexer *lex, FILE *src)
 {
-	struct lexer lex;
+	char buf[BUFSIZ];
+	size_t siz, idx;
 
-	lex.src = src;
-	lex.col = lex.row = 0;
+	if (fseek(src, 0, SEEK_END))
+		return -1;
+	if ((siz = ftell(src)) < 0)
+		return -1;
+	if ((lex->str = malloc(siz + 1)) == NULL)
+		return -1;
 
-	return lex;
+	rewind(src);
+	for (idx = 0; idx < siz; idx += siz)
+		siz = fread(lex->str + idx, sizeof(char), sizeof(buf), src);
+
+	lex->str[idx] = '\0';
+	lex->cur = lex->str;
+	lex->col = lex->row = 0;
+
+	return 0;
 }
 
 struct token
 lexer_token(struct lexer *lex)
 {
-	static char delim = '\0';
-	struct token tok;
-	size_t len;
-	int chr;
+}
 
-	if (delim) {
-		tok = token_new(delim);
-		delim = '\0';
-		return tok;
-	}
+void
+lexer_free(struct lexer *lex)
+{
+	if (lex->str)
+		free(lex->str);
 
-	while (isspace(chr = fgetc(lex->src)))
-		/* skip whitespaces */;
-	for (len = 0; len < BUF_SIZE && !isspace(chr); ++len) {
-		tok.str[len] = chr;
-		if (feof(lex->src))
-			return token_new(TOKEN_EOF);
-		if (ferror(lex->src))
-			return token_new(TOKEN_ERROR);
-		if (strchr(",;(){}[]=*+-", chr)) {
-			if (tok.str[0] != '\0')
-				return token_new(chr);
-
-			delim = chr;
-			break;
-		}
-
-		chr = fgetc(lex->src);
-	}
-
-	tok.str[len] = '\0';
-	tok.type = token_type(tok.str);
-
-	return tok;
+	lex->str = NULL;
+	lex->col = lex->row = 0;
 }

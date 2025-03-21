@@ -16,7 +16,6 @@
 #define _CASM_H
 
 #define PROGNAME "casm"
-#define BUF_SIZE 1024
 
 #include <stdio.h>
 
@@ -25,9 +24,15 @@ struct casm {
 	FILE *src, *obj;
 };
 
+struct lexer {
+	char *str, *cur;
+	size_t col, row;
+};
+
 enum token_type {
-	TOKEN_TYPE,
-	TOKEN_NAME,
+	TOKEN_ADD = '+',
+	TOKEN_SUB = '-',
+	TOKEN_MUL = '*',
 	TOKEN_LPAR = '(',
 	TOKEN_RPAR = ')',
 	TOKEN_COMMA = ',',
@@ -37,21 +42,18 @@ enum token_type {
 	TOKEN_LBRACKET = '[',
 	TOKEN_RBRACKET = ']',
 	TOKEN_SEMICOLON = ';',
+	TOKEN_UNKNOWN,
 	TOKEN_INTEGER,
 	TOKEN_STRING,
 	TOKEN_FLOAT,
+	TOKEN_TYPE,
 	TOKEN_ERROR,
 	TOKEN_EOF
 };
 
 struct token {
-	char str[BUF_SIZE];
+	char *str;
 	enum token_type type;
-};
-
-struct lexer {
-	FILE *src;
-	size_t col, row;
 };
 
 /* casm.c */
@@ -62,8 +64,9 @@ void casm_free(struct casm *);
 int codegen(struct casm *);
 
 /* lexer.c */
-struct lexer lexer_new(FILE *);
+int lexer_init(struct lexer *, FILE *);
 struct token lexer_token(struct lexer *);
+void lexer_free(struct lexer *);
 
 /* parser.c */
 /* TODO */
