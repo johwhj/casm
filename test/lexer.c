@@ -6,14 +6,14 @@ main(void)
 {
 	struct lexer lex;
 	struct token tok;
+	FILE *src;
 
-	lex = lexer_new(fopen("test/add.s", "r"));
+	src = fopen("test/add.s", "r");
+	lexer_init(&lex, src);
 
-	for (tok = lexer_token(&lex);
-	     tok.type != TOKEN_EOF;
-	     tok = lexer_token(&lex)) {
-	     	if (tok.str[0] != '\0')
-			puts(tok.str);
+	while ((tok = lexer_token(&lex)).type != TOKEN_EOF) {
+	     	if (tok.type == TOKEN_UNKNOWN || tok.type == TOKEN_TYPE)
+	     		puts(tok.str);
 		else
 			printf("%c\n", tok.type);
 	}
