@@ -76,7 +76,7 @@ token_new(char *str, size_t len)
 		}
 	}
 
-	tok.type = TOKEN_UNKNOWN;
+	tok.type = TOKEN_NAME;
 
 	return tok;
 }
