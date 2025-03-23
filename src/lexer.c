@@ -53,36 +53,74 @@ skip_comment(char *cur)
 		break;
 	}
 
-	return skip_whitespace(cur);
+	return cur;
+}
+
+static int
+is_integer(char *str)
+{
+	if (str[0] == '0' && str[1] == 'b') {
+		for (str += 2; *str; ++str)
+			if (*str != '0' && *str != '1')
+				return 0;
+	} else if (str[0] == '0') {
+		for (++str; *str; ++str)
+			if (*str < '0' || '7' < *str)
+				return 0;
+	} else if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
+		for (str += 2; *str; ++str)
+			if (!isxdigit(*str))
+				return 0;
+	} else {
+		while (*str)
+			if (!isdigit(*str++))
+				return 0;
+	}
+
+	return 1;
+}
+
+static int
+is_float(const char *str)
+{
+	return 0;
+}
+
+static enum token_type
+token_type(char *str)
+{
+	size_t i;
+
+	if (*str == '"' && str[strlen(str) - 1] == '"')
+		return TOKEN_STRING;
+	if (is_integer(str))
+		return TOKEN_INTEGER;
+	if (is_float(str))
+		return TOKEN_FLOAT;
+	for (i = 0; type_map[i]; ++i)
+		if (strcmp(str, type_map[i]) == 0)
+			return TOKEN_TYPE;
+
+	return TOKEN_NAME;
 }
 
 static struct token
-token_new(char *str, size_t len)
+token_new(const char *str, const size_t len)
 {
 	struct token tok;
-	size_t i;
 
-	tok.type = TOKEN_ERROR;
 	if ((tok.str = malloc(len + 1)) == NULL)
 		return tok;
 
 	(void)strncpy(tok.str, str, len);
 	tok.str[len] = '\0';
-
-	for (i = 0; type_map[i]; ++i) {
-		if (strcmp(tok.str, type_map[i]) == 0) {
-			tok.type = TOKEN_TYPE;
-			return tok;
-		}
-	}
-
-	tok.type = TOKEN_NAME;
+	tok.type = token_type(tok.str);
 
 	return tok;
 }
 
 static struct token
-token_type(int type)
+typed_token(int type)
 {
 	struct token tok;
 
@@ -124,17 +162,17 @@ lexer_token(struct lexer *lex)
 
 	str = lex->cur = skip_whitespace(lex->cur);
 	str = lex->cur = skip_comment(lex->cur);
+	str = lex->cur = skip_whitespace(lex->cur);
 
 	if (*lex->cur == '\0')
-		return token_type(TOKEN_EOF);
+		return typed_token(TOKEN_EOF);
 	if (strchr("(){}[];,=+-*/", *lex->cur))
-		return token_type(*lex->cur++);
+		return typed_token(*lex->cur++);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
-			return token_type(TOKEN_EOF);
+			return typed_token(TOKEN_EOF);
 		if (strchr("(){}[];,=+-*/", *lex->cur))
 			break;
-
 		++lex->cur;
 	}
 
