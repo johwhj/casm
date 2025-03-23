@@ -30,23 +30,23 @@ struct lexer {
 };
 
 enum token_type {
-	TOKEN_ADD = '+',
-	TOKEN_SUB = '-',
-	TOKEN_MUL = '*',
 	TOKEN_LPAR = '(',
 	TOKEN_RPAR = ')',
+	TOKEN_MUL = '*',
+	TOKEN_ADD = '+',
+	TOKEN_SUB = '-',
 	TOKEN_COMMA = ',',
+	TOKEN_SEMICOLON = ';',
 	TOKEN_ASSIGN = '=',
-	TOKEN_LBRACE = '{',
-	TOKEN_RBRACE = '}',
 	TOKEN_LBRACKET = '[',
 	TOKEN_RBRACKET = ']',
-	TOKEN_SEMICOLON = ';',
+	TOKEN_LBRACE = '{',
+	TOKEN_RBRACE = '}',
 	TOKEN_INTEGER,
 	TOKEN_STRING,
 	TOKEN_FLOAT,
 	TOKEN_TYPE,
-	TOKEN_NAME,
+	TOKEN_NAME, /* name of variable, function, register or operation */
 	TOKEN_ERROR,
 	TOKEN_EOF
 };
