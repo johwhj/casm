@@ -45,6 +45,7 @@ enum token_type {
 	TOKEN_INTEGER,
 	TOKEN_STRING,
 	TOKEN_FLOAT,
+	TOKEN_LABEL,
 	TOKEN_TYPE,
 	TOKEN_NAME, /* name of variable, function, register or operation */
 	TOKEN_ERROR,
