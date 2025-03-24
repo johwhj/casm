@@ -14,7 +14,7 @@
 
 #include "add.h"
 
-int _global_i = 1;
+int _global_i = -1;
 int _global_u;
 
 int
