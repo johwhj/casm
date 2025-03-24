@@ -127,8 +127,7 @@ typed_token(int type)
 int
 lexer_init(struct lexer *lex, FILE *src)
 {
-	char buf[BUFSIZ];
-	long siz, idx;
+	long siz;
 
 	if (fseek(src, 0, SEEK_END))
 		return -1;
@@ -138,10 +137,10 @@ lexer_init(struct lexer *lex, FILE *src)
 		return -1;
 
 	rewind(src);
-	for (idx = 0; idx < siz; idx += siz)
-		siz = fread(lex->str + idx, sizeof(char), sizeof(buf), src);
+	if (fread(lex->str, sizeof(char), siz, src) < (size_t)siz)
+		return -1;
 
-	lex->str[idx] = '\0';
+	lex->str[siz] = '\0';
 	lex->cur = lex->str;
 	lex->col = lex->row = 0;
 
