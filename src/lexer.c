@@ -57,12 +57,12 @@ skip_comment(char *cur)
 }
 
 static int
-is_integer(char *str)
+is_integer(const char *str)
 {
 	unsigned long i;
 
 	if (str[0] != '0' || str[1] != 'b')
-		return sscanf(str, "%ul", &i) == 1;
+		return sscanf(str, "%lu", &i) == 1;
 	for (str += 2; *str; ++str)
 		if (*str != '0' && *str != '1')
 			return 0;
