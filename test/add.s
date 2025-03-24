@@ -20,6 +20,7 @@ int _global_u;
 int
 add(int x, int y)
 {
+test:
 	mov eax, x;
 	add eax, y;
 
