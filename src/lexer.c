@@ -83,7 +83,9 @@ is_integer(char *str)
 static int
 is_float(const char *str)
 {
-	return 0;
+	double _f;
+
+	return sscanf(str, "%lf", &_f) == 1;
 }
 
 static enum token_type
