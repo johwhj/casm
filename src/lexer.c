@@ -18,9 +18,7 @@
 #include <string.h>
 
 static const char *type_map[] = {
-	"char", "short", "int", "long", "unsigned",
-	"float", "double",
-	NULL
+	"char", "short", "int", "long", "unsigned", "float", "double", NULL
 };
 
 static char *
