@@ -1,6 +1,14 @@
 #include "../src/casm.h"
 #include <stdio.h>
 
+static int
+is_printable(enum token_type type)
+{
+	return type == TOKEN_NAME || type == TOKEN_TYPE
+	       || type == TOKEN_INTEGER || type == TOKEN_STRING
+	       || type == TOKEN_FLOAT;
+}
+
 int
 main(void)
 {
@@ -12,8 +20,7 @@ main(void)
 	lexer_init(&lex, src);
 
 	while ((tok = lexer_token(&lex)).type != TOKEN_EOF) {
-		if (tok.type == TOKEN_NAME || tok.type == TOKEN_TYPE
-		    || tok.type == TOKEN_INTEGER || tok.type == TOKEN_STRING)
+		if (is_printable(tok.type))
 	     		puts(tok.str);
 		else
 			printf("%c\n", tok.type);
