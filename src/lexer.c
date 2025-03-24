@@ -81,9 +81,13 @@ is_float(const char *str)
 static enum token_type
 token_type(char *str)
 {
-	size_t i;
+	size_t i, len;
 
-	if (*str == '"' && str[strlen(str) - 1] == '"')
+	len = strlen(str);
+
+	if (str[len - 1] == ':')
+		return TOKEN_LABEL;
+	if (*str == '"' && str[len - 1] == '"')
 		return TOKEN_STRING;
 	if (is_integer(str))
 		return TOKEN_INTEGER;
@@ -158,12 +162,12 @@ lexer_token(struct lexer *lex)
 
 	if (*lex->cur == '\0')
 		return typed_token(TOKEN_EOF);
-	if (strchr("(){}[];,=+*", *lex->cur) && !isdigit(lex->cur[1]))
+	if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
 		return typed_token(*lex->cur++);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			return typed_token(TOKEN_EOF);
-		if (strchr("(){}[];,=+*", *lex->cur) && !isdigit(lex->cur[1]))
+		if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
 			break;
 		++lex->cur;
 	}
