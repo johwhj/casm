@@ -59,23 +59,13 @@ skip_comment(char *cur)
 static int
 is_integer(char *str)
 {
-	if (str[0] == '0' && str[1] == 'b') {
-		for (str += 2; *str; ++str)
-			if (*str != '0' && *str != '1')
-				return 0;
-	} else if (str[0] == '0') {
-		for (++str; *str; ++str)
-			if (*str < '0' || '7' < *str)
-				return 0;
-	} else if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
-		for (str += 2; *str; ++str)
-			if (!isxdigit(*str))
-				return 0;
-	} else {
-		while (*str)
-			if (!isdigit(*str++))
-				return 0;
-	}
+	unsigned long i;
+
+	if (str[0] != '0' || str[1] != 'b')
+		return sscanf(str, "%ul", &i) == 1;
+	for (str += 2; *str; ++str)
+		if (*str != '0' && *str != '1')
+			return 0;
 
 	return 1;
 }
@@ -83,9 +73,9 @@ is_integer(char *str)
 static int
 is_float(const char *str)
 {
-	double _f;
+	double f;
 
-	return sscanf(str, "%lf", &_f) == 1;
+	return sscanf(str, "%lf", &f) == 1;
 }
 
 static enum token_type
@@ -168,12 +158,12 @@ lexer_token(struct lexer *lex)
 
 	if (*lex->cur == '\0')
 		return typed_token(TOKEN_EOF);
-	if (strchr("(){}[];,=+-*/", *lex->cur))
+	if (strchr("(){}[];,=+*", *lex->cur) && !isdigit(lex->cur[1]))
 		return typed_token(*lex->cur++);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			return typed_token(TOKEN_EOF);
-		if (strchr("(){}[];,=+-*/", *lex->cur))
+		if (strchr("(){}[];,=+*", *lex->cur) && !isdigit(lex->cur[1]))
 			break;
 		++lex->cur;
 	}
