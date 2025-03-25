@@ -50,6 +50,7 @@ enum token_type {
 	TOKEN_TYPE,
 	TOKEN_NAME, /* name of variable, function, register or operation */
 	TOKEN_ERROR,
+	TOKEN_NONE,
 	TOKEN_EOF
 };
 
