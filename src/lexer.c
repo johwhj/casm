@@ -22,36 +22,41 @@ static const char *type_map[] = {
 };
 
 static char *
-skip_whitespace(char *cur)
+lexer_next(struct lexer *lex)
 {
-	while (isspace(*cur))
-		++cur;
+	if (*lex->cur == '\n') {
+		++lex->col;
+		lex->row = 0;
+	}
 
-	return cur;
+	++lex->cur;
+	++lex->row;
+
+	return lex->cur;
 }
 
 static char *
-skip_comment(char *cur)
+skip_meaningless(struct lexer *lex)
 {
-	if (cur[0] != '/')
-		return cur;
-
-	switch (cur[1]) {
-	case '*': /* multiline comment */
-		for (cur += 2; cur[0] != '*' || cur[1] != '/'; ++cur)
-			/* ignore characters */;
-		cur += 2;
-		break;
-	case '/': /* single line comment */
-		for (cur += 2; *cur != '\n'; ++cur)
-			/* ignore characters */;
-		++cur;
-		break;
-	default:
-		break;
+	while (isspace(*lex->cur))
+		lexer_next(lex);
+	if (lex->cur[0] != '/')
+		return;
+	if (lex->cur[1] == '*') {
+		lex->cur += 2;
+		while (lex->cur[0] != '*' || lex->cur[1] != '/')
+			lexer_next(lex);
+		lex->cur += 2;
+	} else if (lex->cur[1] == '/') {
+		lex->cur += 2;
+		while (lex->cur[0] != '\n')
+			lexer_next(lex);
+		++lex->cur;
 	}
+	while (isspace(*lex->cur))
+		lexer_next(lex);
 
-	return cur;
+	return lex->cur;
 }
 
 static int
