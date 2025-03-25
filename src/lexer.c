@@ -41,7 +41,7 @@ skip_meaningless(struct lexer *lex)
 	while (isspace(*lex->cur))
 		lexer_next(lex);
 	if (lex->cur[0] != '/')
-		return;
+		return lex->cur;
 	if (lex->cur[1] == '*') {
 		lex->cur += 2;
 		while (lex->cur[0] != '*' || lex->cur[1] != '/')
@@ -104,27 +104,16 @@ token_type(const char *str)
 }
 
 static struct token
-token_new(const char *str, const size_t len)
+token_new(struct lexer *lex, const int type, const char *str, const size_t len)
 {
 	struct token tok;
-
-	if ((tok.str = malloc(len + 1)) == NULL)
-		return tok;
 
 	(void)strncpy(tok.str, str, len);
 	tok.str[len] = '\0';
-	tok.type = token_type(tok.str);
+	tok.type = str ? token_type(tok.str) : type;
 
-	return tok;
-}
-
-static struct token
-typed_token(int type)
-{
-	struct token tok;
-
-	tok.type = type;
-	tok.str = NULL;
+	tok.col = lex->col;
+	tok.row = lex->row;
 
 	return tok;
 }
@@ -159,23 +148,22 @@ lexer_token(struct lexer *lex)
 	char *str;
 	size_t len;
 
-	str = lex->cur = skip_whitespace(lex->cur);
-	str = lex->cur = skip_comment(lex->cur);
-	str = lex->cur = skip_whitespace(lex->cur);
+	str = skip_meaningless(lex);
 
 	if (*lex->cur == '\0')
-		return typed_token(TOKEN_EOF);
+		return token_new(lex, TOKEN_EOF, NULL, 0);
 	if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
-		return typed_token(*lex->cur++);
+		return token_new(lex, *str, str, len);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
-			return typed_token(TOKEN_EOF);
+			return token_new(lex, TOKEN_EOF, NULL, 0);
 		if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
 			break;
-		++lex->cur;
+
+		lexer_next(lex);
 	}
 
-	return token_new(str, len);
+	return token_new(lex, TOKEN_ERROR, str, len);
 }
 
 void
