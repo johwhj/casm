@@ -82,7 +82,7 @@ is_float(const char *str)
 }
 
 static enum token_type
-token_type(char *str)
+token_type(const char *str)
 {
 	size_t i, len;
 
