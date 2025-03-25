@@ -82,14 +82,10 @@ is_float(const char *str)
 }
 
 static enum token_type
-token_type(const char *str)
+token_type(char *str, const size_t len)
 {
-	size_t i, len;
+	size_t i;
 
-	len = strlen(str);
-
-	if (str[len - 1] == ':')
-		return TOKEN_LABEL;
 	if (*str == '"' && str[len - 1] == '"')
 		return TOKEN_STRING;
 	if (is_integer(str))
@@ -97,20 +93,25 @@ token_type(const char *str)
 	if (is_float(str))
 		return TOKEN_FLOAT;
 	for (i = 0; type_map[i]; ++i)
-		if (strcmp(str, type_map[i]) == 0)
+		if (strncmp(str, type_map[i], len) == 0)
 			return TOKEN_TYPE;
+	if (str[len - 1] == ':') {
+		str[len - 1] = '\0';
+		return TOKEN_LABEL;
+	}
 
 	return TOKEN_NAME;
 }
 
 static struct token
-token_new(struct lexer *lex, const int type, const char *str, const size_t len)
+token_new(struct lexer *lex, const enum token_type type,
+          char *str, const size_t len)
 {
 	struct token tok;
 
-	(void)strncpy(tok.str, str, len);
+	tok.type = (type == TOKEN_NONE) ? token_type(str, len) : type;
+	(void)memcpy(tok.str, str, len);
 	tok.str[len] = '\0';
-	tok.type = str ? token_type(tok.str) : type;
 
 	tok.col = lex->col;
 	tok.row = lex->row;
@@ -150,10 +151,10 @@ lexer_token(struct lexer *lex)
 
 	str = skip_meaningless(lex);
 
-	if (*lex->cur == '\0')
+	if (*str == '\0')
 		return token_new(lex, TOKEN_EOF, NULL, 0);
-	if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
-		return token_new(lex, *str, str, len);
+	if (strchr("(){}[];,=+-*", *str) && !isdigit(str[1]))
+		return token_new(lex, *str, lexer_next(lex), 0);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			return token_new(lex, TOKEN_EOF, NULL, 0);
@@ -163,7 +164,7 @@ lexer_token(struct lexer *lex)
 		lexer_next(lex);
 	}
 
-	return token_new(lex, TOKEN_ERROR, str, len);
+	return token_new(lex, TOKEN_NONE, str, len);
 }
 
 void
