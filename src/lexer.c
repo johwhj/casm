@@ -173,6 +173,6 @@ lexer_free(struct lexer *lex)
 	if (lex->str)
 		free(lex->str);
 
-	lex->str = NULL;
+	lex->str = lex->cur = NULL;
 	lex->col = lex->row = 0;
 }
