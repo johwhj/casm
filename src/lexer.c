@@ -145,9 +145,10 @@ lexer_init(struct lexer *lex, FILE *src)
 	if (fread(lex->str, sizeof(char), siz, src) < (size_t)siz)
 		return -1;
 
+	fclose(src);
 	lex->str[siz] = '\0';
 	lex->cur = lex->str;
-	lex->col = lex->row = 0;
+	lex->col = lex->row = 1;
 
 	return 0;
 }
