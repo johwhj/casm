@@ -16,6 +16,7 @@
 #define _CASM_H
 
 #define PROGNAME "casm"
+#define TOKEN_SIZE 64
 
 #include <stdio.h>
 
@@ -53,8 +54,9 @@ enum token_type {
 };
 
 struct token {
-	char *str;
+	char str[TOKEN_SIZE];
 	enum token_type type;
+	size_t col, row;
 };
 
 /* casm.c */
