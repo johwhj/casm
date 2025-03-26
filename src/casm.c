@@ -51,4 +51,6 @@ casm_free(struct casm *casm)
 		fclose(casm->src);
 	if (casm->obj)
 		fclose(casm->obj);
+
+	casm->src = casm->obj = NULL;
 }
