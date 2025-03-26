@@ -81,6 +81,18 @@ is_float(const char *str)
 	return sscanf(str, "%lf", &f) == 1;
 }
 
+static int
+is_name(char *str, size_t len)
+{
+	if (!isalpha(*str) && *str != '_')
+		return 0;
+	while (--len)
+		if (!isalnum(*str) && *str != '_')
+			return 0;
+
+	return 1;
+}
+
 static enum token_type
 token_type(char *str, const size_t len)
 {
@@ -97,12 +109,16 @@ token_type(char *str, const size_t len)
 	for (i = 0; type_map[i]; ++i)
 		if (strncmp(str, type_map[i], len) == 0)
 			return TOKEN_TYPE;
-	if (str[len - 1] == ':') {
-		str[len - 1] = '\0';
-		return TOKEN_LABEL;
+	if (is_name(str, len)) {
+		if (str[len - 1] == ':') {
+			str[len - 1] = '\0';
+			return TOKEN_LABEL;
+		}
+
+		return TOKEN_NAME;
 	}
 
-	return TOKEN_NAME;
+	return TOKEN_ERROR;
 }
 
 static struct token
