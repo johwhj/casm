@@ -114,7 +114,7 @@ token_new(struct lexer *lex, const enum token_type type,
 	tok.str[len] = '\0';
 
 	tok.col = lex->col;
-	tok.row = lex->row;
+	tok.row = lex->row - len;
 
 	return tok;
 }
@@ -154,7 +154,7 @@ lexer_token(struct lexer *lex)
 	if (*str == '\0')
 		return token_new(lex, TOKEN_EOF, NULL, 0);
 	if (strchr("(){}[];,=+-*", *str) && !isdigit(str[1]))
-		return token_new(lex, *str, lexer_next(lex), 0);
+		return token_new(lex, *str, lexer_next(lex), 1);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			return token_new(lex, TOKEN_EOF, NULL, 0);

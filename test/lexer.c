@@ -21,9 +21,9 @@ main(void)
 
 	while ((tok = lexer_token(&lex)).type != TOKEN_EOF) {
 		if (is_printable(tok.type))
-	     		puts(tok.str);
+	     		printf("%s\t%d:%d\n", tok.str, tok.col, tok.row);
 		else
-			printf("%c\n", tok.type);
+			printf("%c\t%d:%d\n", tok.type, tok.col, tok.row);
 	}
 
 	return 0;
