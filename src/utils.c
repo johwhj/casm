@@ -18,7 +18,7 @@
 #include <stdlib.h>
 
 int
-usage
+usage(void)
 {
 	fprintf(stderr, "usage: "PROGNAME" file...\n");
 
