@@ -110,7 +110,7 @@ token_new(struct lexer *lex, const enum token_type type,
 	struct token tok;
 
 	tok.type = (type == TOKEN_NONE) ? token_type(str, len) : type;
-	(void)memcpy(tok.str, str, len);
+	memcpy(tok.str, str, len);
 	tok.str[len] = '\0';
 
 	tok.col = lex->col;

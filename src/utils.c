@@ -18,9 +18,9 @@
 #include <stdlib.h>
 
 int
-usage(void)
+usage
 {
-	(void)fprintf(stderr, "usage: "PROGNAME" file...\n");
+	fprintf(stderr, "usage: "PROGNAME" file...\n");
 
 	return 1;
 }
@@ -30,13 +30,13 @@ error(const char *fmt, ...)
 {
 	va_list ap;
 
-	(void)fprintf(stderr, PROGNAME": ");
+	fprintf(stderr, PROGNAME": ");
 
 	va_start(ap, fmt);
-	(void)vfprintf(stderr, fmt, ap);
+	vfprintf(stderr, fmt, ap);
 	va_end(ap);
 
-	(void)fputc('\n', stderr);
+	fputc('\n', stderr);
 
 	return 1;
 }
