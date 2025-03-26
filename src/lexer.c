@@ -86,6 +86,8 @@ token_type(char *str, const size_t len)
 {
 	size_t i;
 
+	if (*str == '#')
+		return TOKEN_MACRO;
 	if (*str == '"' && str[len - 1] == '"')
 		return TOKEN_STRING;
 	if (is_integer(str))

@@ -47,6 +47,7 @@ enum token_type {
 	TOKEN_STRING,
 	TOKEN_FLOAT,
 	TOKEN_LABEL,
+	TOKEN_MACRO,
 	TOKEN_TYPE,
 	TOKEN_NAME, /* name of variable, function, register or operation */
 	TOKEN_ERROR,
@@ -64,7 +65,7 @@ struct token {
 int casm_init(struct casm *, char *);
 void casm_free(struct casm *);
 
-/* x86-64.c */
+/* arch/x86-64.c */
 int codegen(struct casm *);
 
 /* lexer.c */
