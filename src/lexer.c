@@ -157,7 +157,7 @@ lexer_token(struct lexer *lex)
 		return token_new(lex, *str, lexer_next(lex), 1);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
-			return token_new(lex, TOKEN_EOF, NULL, 0);
+			break;
 		if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
 			break;
 
