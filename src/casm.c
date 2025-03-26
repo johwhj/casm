@@ -20,7 +20,7 @@
  * open assembly file and create object file
  */
 int
-casm_init(struct casm *casm, const char *name)
+casm_init(struct casm *casm, char *name)
 {
 	char *dot;
 

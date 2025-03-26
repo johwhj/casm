@@ -21,7 +21,7 @@
 #include <stdio.h>
 
 struct casm {
-	const char *name;
+	char *name;
 	FILE *src, *obj;
 };
 
@@ -61,7 +61,7 @@ struct token {
 };
 
 /* casm.c */
-int casm_init(struct casm *, const char *);
+int casm_init(struct casm *, char *);
 void casm_free(struct casm *);
 
 /* x86-64.c */
@@ -78,5 +78,6 @@ void lexer_free(struct lexer *);
 /* utils.c */
 int usage(void);
 int error(const char *, ...);
+int syntax_error(struct casm *, const char *, ...);
 
 #endif
