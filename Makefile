@@ -1,6 +1,5 @@
 include config.mk
 
-ARCH = $(shell uname -m)
 SRC = src/main.c src/casm.c src/utils.c src/lexer.c src/arch/$(ARCH).c
 OBJ = $(notdir $(SRC:.c=.o))
 
