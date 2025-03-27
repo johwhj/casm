@@ -13,7 +13,7 @@ help:
 	@echo "       make uninstall"
 
 x86-64:
-	$(CC) $(CFLAGS) -c $(SRC) src/$@.c
+	$(CC) $(CFLAGS) -c $(SRC) src/arch/$@.c
 	$(CC) -o casm $(OBJ)
 
 clean:
