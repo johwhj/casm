@@ -31,6 +31,7 @@ struct lexer {
 };
 
 enum token_type {
+	TOKEN_SHARP     = '#',
 	TOKEN_LPAR      = '(',
 	TOKEN_RPAR      = ')',
 	TOKEN_MUL       = '*',
@@ -49,7 +50,6 @@ enum token_type {
 	TOKEN_FLOAT,
 	TOKEN_TYPE,
 	TOKEN_NAME,
-	TOKEN_MACRO,
 	TOKEN_ERROR,
 	TOKEN_NONE,
 	TOKEN_EOF
