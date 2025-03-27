@@ -109,14 +109,8 @@ token_type(char *str, const size_t len)
 	for (i = 0; type_map[i]; ++i)
 		if (strncmp(str, type_map[i], len) == 0)
 			return TOKEN_TYPE;
-	if (is_name(str, len)) {
-		if (str[len - 1] == ':') {
-			str[len - 1] = '\0';
-			return TOKEN_LABEL;
-		}
-
+	if (is_name(str, len))
 		return TOKEN_NAME;
-	}
 
 	return TOKEN_ERROR;
 }
@@ -170,12 +164,12 @@ lexer_token(struct lexer *lex)
 
 	if (*str == '\0')
 		return token_new(lex, TOKEN_EOF, NULL, 0);
-	if (strchr("(){}[];,=+-*", *str) && !isdigit(str[1]))
+	if (strchr("(){}[]:;,=+-*", *str) && !isdigit(str[1]))
 		return token_new(lex, *str, lexer_next(lex), 1);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			break;
-		if (strchr("(){}[];,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
+		if (strchr("(){}[]:;,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
 			break;
 
 		lexer_next(lex);
