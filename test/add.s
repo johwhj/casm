@@ -14,8 +14,8 @@
 
 #include "add.h"
 
-int _global_i = -1;
-int _global_u;
+int _data = -1;
+int _bss;
 
 int
 add(int x, int y)
