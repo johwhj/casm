@@ -6,8 +6,7 @@ is_printable(enum token_type type)
 {
 	return type == TOKEN_NAME || type == TOKEN_TYPE
 	       || type == TOKEN_INTEGER || type == TOKEN_STRING
-	       || type == TOKEN_FLOAT || type == TOKEN_LABEL
-	       || type == TOKEN_MACRO;
+	       || type == TOKEN_FLOAT || type == TOKEN_MACRO;
 }
 
 int
