@@ -93,13 +93,17 @@ is_name(char *str, size_t len)
 	return 1;
 }
 
+static int
+is_delim(const char chr)
+{
+	return strchr("#()*+,-:;=[]{}", chr) != NULL;
+}
+
 static enum token_type
 token_type(char *str, const size_t len)
 {
 	size_t i;
 
-	if (*str == '#')
-		return TOKEN_MACRO;
 	if (*str == '"' && str[len - 1] == '"')
 		return TOKEN_STRING;
 	if (is_integer(str))
@@ -164,12 +168,12 @@ lexer_token(struct lexer *lex)
 
 	if (*str == '\0')
 		return token_new(lex, TOKEN_EOF, NULL, 0);
-	if (strchr("(){}[]:;,=+-*", *str) && !isdigit(str[1]))
+	if (is_delim(*lex->cur) && !isdigit(str[1]))
 		return token_new(lex, *str, lexer_next(lex), 1);
 	for (len = 0; !isspace(*lex->cur); ++len) {
 		if (*lex->cur == '\0')
 			break;
-		if (strchr("(){}[]:;,=+-*", *lex->cur) && !isdigit(lex->cur[1]))
+		if (is_delim(*lex->cur) && !isdigit(lex->cur[1]))
 			break;
 
 		lexer_next(lex);
