@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = src/main.c src/casm.c src/utils.c src/lexer.c src/arch/$(ARCH).c
+SRC = src/main.c src/utils.c src/lexer.c src/arch/$(ARCH).c
 OBJ = $(notdir $(SRC:.c=.o))
 
 all: casm
