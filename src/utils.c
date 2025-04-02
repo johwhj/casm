@@ -15,7 +15,6 @@
 #include "casm.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include <stdlib.h>
 #include <string.h>
 
 int
@@ -38,26 +37,6 @@ error(const char *fmt, ...)
 	va_end(ap);
 
 	fputc('\n', stderr);
-
-	return 1;
-}
-
-int
-syntax_error(struct casm *casm, const char *fmt, ...)
-{
-	va_list ap;
-
-	fprintf(stderr, "error: %s: ", casm->name);
-
-	va_start(ap, fmt);
-	vfprintf(stderr, fmt, ap);
-	va_end(ap);
-
-	fputc('\n', stderr);
-
-	casm_free(casm);
-	casm->name[strlen(casm->name) - 1] = 'o';
-	remove(casm->name);
 
 	return 1;
 }
