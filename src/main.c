@@ -14,10 +14,21 @@
 
 #include "casm.h"
 
+struct file
+file_open(char *name)
+{
+	struct file file;
+
+	file.name = name;
+	file.file = fopen(name, "r");
+
+	return file;
+}
+
 int
 main(int argc, char *argv[])
 {
-	struct casm casm;
+	struct file file;
 	int state;
 
 	state = 0;
@@ -25,10 +36,9 @@ main(int argc, char *argv[])
 	if (argc == 1)
 		return usage();
 	for (--argc, ++argv; argc; --argc, ++argv) {
-		state |= casm_init(&casm, *argv);
-		state |= codegen(&casm);
-
-		casm_free(&casm);
+		file = file_open(*argv);
+		state |= codegen(&file);
+		fclose(file.file);
 	}
 
 	return state;
