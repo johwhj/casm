@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 struct lexer {
-	char *str;
+	char *str, *cur;
 	size_t col, row;
 };
 

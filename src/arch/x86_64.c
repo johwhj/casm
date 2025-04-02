@@ -15,7 +15,7 @@
 #include "../casm.h"
 
 int
-codegen(struct casm *casm)
+codegen(struct file *file)
 {
 	return 0;
 }
