@@ -20,65 +20,19 @@
 
 #include <stdio.h>
 
-struct casm {
+struct file {
 	char *name;
-	FILE *src, *obj;
+	FILE *file;
 };
 
-struct lexer {
-	char *str, *cur;
-	size_t col, row;
-};
-
-enum token_type {
-	TOKEN_SHARP     = '#',
-	TOKEN_LPAR      = '(',
-	TOKEN_RPAR      = ')',
-	TOKEN_MUL       = '*',
-	TOKEN_ADD       = '+',
-	TOKEN_SUB       = '-',
-	TOKEN_COMMA     = ',',
-	TOKEN_COLON     = ':',
-	TOKEN_SEMICOLON = ';',
-	TOKEN_ASSIGN    = '=',
-	TOKEN_LBRACKET  = '[',
-	TOKEN_RBRACKET  = ']',
-	TOKEN_LBRACE    = '{',
-	TOKEN_RBRACE    = '}',
-	TOKEN_INTEGER,
-	TOKEN_STRING,
-	TOKEN_FLOAT,
-	TOKEN_TYPE,
-	TOKEN_NAME,
-	TOKEN_ERROR,
-	TOKEN_NONE,
-	TOKEN_EOF
-};
-
-struct token {
-	char str[TOKEN_SIZE];
-	enum token_type type;
-	size_t col, row;
-};
-
-/* casm.c */
-int casm_init(struct casm *, char *);
-void casm_free(struct casm *);
+/* main.c */
+struct file file_open(char *);
 
 /* arch/x86-64.c */
-int codegen(struct casm *);
-
-/* lexer.c */
-int lexer_init(struct lexer *, FILE *);
-struct token lexer_token(struct lexer *);
-void lexer_free(struct lexer *);
-
-/* parser.c */
-/* TODO */
+int codegen(struct file *);
 
 /* utils.c */
 int usage(void);
 int error(const char *, ...);
-int syntax_error(struct casm *, const char *, ...);
 
 #endif
