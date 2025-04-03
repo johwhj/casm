@@ -18,11 +18,11 @@
 #include <string.h>
 
 static char *
-lexer_next_char(struct lexer *lex)
+lexer_next_chr(struct lexer *lex)
 {
 	if (*lex->cur == '\n') {
-		len->row = 1;
-		++len->col;
+		lex->row = 1;
+		++lex->col;
 	} else {
 		++lex->row;
 	}
@@ -34,22 +34,42 @@ static char *
 lexer_next_str(struct lexer *lex)
 {
 	while (isspace(*lex->cur))
-		lex->cur = lexer_next_char(lex);
-	if (lex->cur[0] == '/' && lex->cur[1] == '*') {
+		lex->cur = lexer_next_chr(lex);
+	if (lex->cur[0] != '/' )
+		return lex->cur;
+	if (lex->cur[1] == '*') {
 		lex->cur += 2;
 		while (lex->cur[0] != '*' || lex->cur[1] != '/')
-			lex->cur = lexer_next_char(lex);
+			lex->cur = lexer_next_chr(lex);
 		lex->cur += 2;
-	} else if (lex->cur[0] == '/' && lex->cur[1] == '/') {
+	} else if (lex->cur[1] == '/') {
 		lex->cur += 2;
 		while (lex->cur[0] != '\n')
-			lex->cur = lexer_next_char(lex);
+			lex->cur = lexer_next_chr(lex);
 		++lex->cur;
 	}
 	while (isspace(*lex->cur))
-		lex->cur = lexer_next_char(lex);
+		lex->cur = lexer_next_chr(lex);
 
 	return lex->cur;
+}
+
+static enum token_type
+token_type(char *buf)
+{
+	double f;
+
+	if (buf[0] == '"' && buf[strlen(buf) - 1] == '"')
+		return TOKEN_STRING;
+	if (sscanf(buf, "%lf", &f) == 1)
+		return TOKEN_NUMBER;
+	if (*buf != '_' && !isalpha(*buf))
+		return TOKEN_NONE;
+	for (++buf; *buf; ++buf)
+		if (*buf != '_' && !isalnum(*buf))
+			return TOKEN_NONE;
+
+	return TOKEN_NAME;
 }
 
 struct lexer
