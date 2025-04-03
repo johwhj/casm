@@ -13,6 +13,7 @@
  */
 
 #include "casm.h"
+#include "utils.h"
 
 struct file
 file_open(char *name)

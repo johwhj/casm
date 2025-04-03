@@ -12,20 +12,7 @@
  * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#ifndef _CASM_H
-#define _CASM_H
+#define PROGNAME "casm"
 
-#include <stdio.h>
-
-struct file {
-	char *name;
-	FILE *file;
-};
-
-/* main.c */
-struct file file_open(char *);
-
-/* arch/x86-64.c */
-int codegen(struct file *);
-
-#endif
+int usage(void);
+int error(const char *, ...);
