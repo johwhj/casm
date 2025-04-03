@@ -24,6 +24,7 @@ enum token_type {
 	TOKEN_PUNC,
 	TOKEN_STRING,
 	TOKEN_NUMBER,
+	TOKEN_NONE,
 	TOKEN_EOF
 };
 
