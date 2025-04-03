@@ -12,7 +12,12 @@
  * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+#ifndef _UTILS_H
+#define _UTILS_H
+
 #define PROGNAME "casm"
 
 int usage(void);
 int error(const char *, ...);
+
+#endif

@@ -12,6 +12,9 @@
  * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+#ifndef _LEXER_H
+#define _LEXER_H
+
 #include <stdio.h>
 
 struct lexer {
@@ -30,3 +33,5 @@ enum token_type {
 
 struct lexer lexer_new(FILE *);
 enum token_type lexer_next(struct lexer *, char *, size_t);
+
+#endif
