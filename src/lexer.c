@@ -37,8 +37,10 @@ static char *
 lexer_next_chr(struct lexer *lex)
 {
 	if (*lex->cur == '\n') {
-		lex->row = 1;
+		lex->row = 0;
 		++lex->col;
+	} else if (*lex->cur == '\t') {
+		lex->row += 8;
 	} else {
 		++lex->row;
 	}
@@ -128,6 +130,7 @@ lexer_next(struct lexer *lex, char *buf, size_t siz)
 	if (*lex->cur == '\0')
 		return TOKEN_EOF;
 	if (strchr("#()*+,-:;=[]{}", *lex->cur)) {
+		++lex->row;
 		buf[0] = *lex->cur++;
 		return TOKEN_PUNCT;
 	}
@@ -135,9 +138,16 @@ lexer_next(struct lexer *lex, char *buf, size_t siz)
 		if (isspace(*lex->cur) || strchr("#()*+,-:;=[]{}", *lex->cur))
 			return token_type(buf);
 
-		buf[i] = *lex->cur++;
 		++lex->row;
+		buf[i] = *lex->cur++;
 	}
 
 	return TOKEN_NONE;
+}
+
+void
+lexer_free(struct lexer *lex)
+{
+	free(lex->str);
+	lex->str = NULL;
 }
