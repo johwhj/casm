@@ -34,5 +34,6 @@ enum token_type {
 
 struct lexer lexer_new(FILE *);
 enum token_type lexer_next(struct lexer *, char *, size_t);
+void lexer_free(struct lexer *);
 
 #endif
