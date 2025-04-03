@@ -17,6 +17,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+static char *keyword[] = {
+	/* preprocessor keywords */
+	"if",    "elif",   "else",   "endif",
+	"ifdef", "ifndef", "define", "undef"
+	"error", "include",
+
+	/* type qualifiers and type modifiers */
+	"const", "static", "signed", "unsigned",
+
+	/* types */
+	"char", "short", "int", "long", "float", "double",
+
+	/* end of array */
+	NULL,
+};
+
 static char *
 lexer_next_chr(struct lexer *lex)
 {
@@ -58,6 +74,7 @@ static enum token_type
 token_type(char *buf)
 {
 	double f;
+	int i;
 
 	if (buf[0] == '"' && buf[strlen(buf) - 1] == '"')
 		return TOKEN_STRING;
@@ -65,11 +82,14 @@ token_type(char *buf)
 		return TOKEN_NUMBER;
 	if (*buf != '_' && !isalpha(*buf))
 		return TOKEN_NONE;
+	for (i = 0; keyword[i]; ++i)
+		if (strcmp(keyword[i], buf) == 0)
+			return TOKEN_KEYWORD;
 	for (++buf; *buf; ++buf)
 		if (*buf != '_' && !isalnum(*buf))
 			return TOKEN_NONE;
 
-	return TOKEN_NAME;
+	return TOKEN_IDENT;
 }
 
 struct lexer
@@ -85,7 +105,6 @@ lexer_new(FILE *src)
 		return lex;
 	if ((siz = ftell(src)) < 0)
 		return lex;
-
 	rewind(src);
 	if ((lex.str = malloc(siz + 1)) == NULL)
 		return lex;
@@ -101,10 +120,24 @@ lexer_new(FILE *src)
 enum token_type
 lexer_next(struct lexer *lex, char *buf, size_t siz)
 {
-	char *str;
+	size_t i;
 
-	str = lexer_next_str(lex);
+	memset(buf, '\0', siz);
+	lex->cur = lexer_next_str(lex);
 
-	if (*str == '\0')
+	if (*lex->cur == '\0')
 		return TOKEN_EOF;
+	if (strchr("#()*+,-:;=[]{}", *lex->cur)) {
+		buf[0] = *lex->cur++;
+		return TOKEN_PUNCT;
+	}
+	for (i = 0; i < siz; ++i) {
+		if (isspace(*lex->cur) || strchr("#()*+,-:;=[]{}", *lex->cur))
+			return token_type(buf);
+
+		buf[i] = *lex->cur++;
+		++lex->row;
+	}
+
+	return TOKEN_NONE;
 }

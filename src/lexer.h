@@ -23,10 +23,11 @@ struct lexer {
 };
 
 enum token_type {
-	TOKEN_NAME,
-	TOKEN_PUNC,
+	TOKEN_IDENT,
+	TOKEN_PUNCT,
 	TOKEN_STRING,
 	TOKEN_NUMBER,
+	TOKEN_KEYWORD,
 	TOKEN_NONE,
 	TOKEN_EOF
 };

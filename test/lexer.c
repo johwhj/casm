@@ -1,30 +1,19 @@
-#include "../src/casm.h"
+#include "../src/lexer.h"
 #include <stdio.h>
-
-static int
-is_printable(enum token_type type)
-{
-	return type == TOKEN_NAME || type == TOKEN_TYPE
-	       || type == TOKEN_INTEGER || type == TOKEN_STRING
-	       || type == TOKEN_FLOAT;
-}
 
 int
 main(void)
 {
+	char buf[128];
 	struct lexer lex;
-	struct token tok;
 	FILE *src;
+	enum token_type type;
 
 	src = fopen("test/add.s", "r");
-	lexer_init(&lex, src);
+	lex = lexer_new(src);
 
-	while ((tok = lexer_token(&lex)).type != TOKEN_EOF) {
-		if (is_printable(tok.type))
-			printf("%s\ts:%d:%d\n", tok.str, tok.col, tok.row);
-		else
-			printf("%c\tt:%d:%d\n", tok.type, tok.col, tok.row);
-	}
+	while ((type = lexer_next(&lex, buf, sizeof(buf))) != TOKEN_EOF)
+		printf("[%d]:%2d:%2d:%s\n", type, lex.col, lex.row, buf);
 
 	return 0;
 }
