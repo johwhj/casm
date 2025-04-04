@@ -77,7 +77,7 @@ static enum token_type
 token_type(char *buf)
 {
 	double f;
-	int i;
+	size_t i;
 
 	if (buf[0] == '"' && buf[strlen(buf) - 1] == '"')
 		return TOKEN_STRING;
