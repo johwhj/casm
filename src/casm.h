@@ -17,15 +17,7 @@
 
 #include <stdio.h>
 
-struct file {
-	char *name;
-	FILE *file;
-};
-
-/* main.c */
-struct file file_open(char *);
-
 /* arch/x86-64.c */
-int codegen(struct file *);
+int codegen(FILE *, char *);
 
 #endif

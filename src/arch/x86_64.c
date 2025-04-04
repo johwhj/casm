@@ -15,7 +15,7 @@
 #include "../casm.h"
 
 int
-codegen(struct file *file)
+codegen(FILE *fp, char *name)
 {
 	return 0;
 }
