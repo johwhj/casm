@@ -21,21 +21,25 @@
 #include <stddef.h>
 
 enum node_type {
+	/* Node types with token */
+	NODE_INT,      /* char, short, int, long */
+	NODE_FLT,      /* float, double */
+	NODE_STR,      /* NUL terminated C string */
 	NODE_ADD,      /* + in memory addressing */
 	NODE_SUB,      /* - in memory addressing */
 	NODE_MUL,      /* * in memory addressing */
-	NODE_TYPE,     /* function or argument type */
-	NODE_NAME,     /* function or argument name */
+	NODE_TYPE,     /* variable, function, argument type */
+	NODE_NAME,     /* variable, function, argument name */
 	NODE_LABEL,
 	NODE_ASSIGN,   /* `=` in initialized global variable */
-	NODE_NUMBER,
-	NODE_STRING,
-	NODE_OPCODE,
-	NODE_ADDRESS,  /* such as [reg + num] */
-	NODE_ARGUMENT, /* has NODE_TYPE and NODE_NAME children */
+	NODE_OPCODE,   /* CPU dependent */
 	NODE_REGISTER, /* CPU dependent */
-	NODE_FUNCTION,
-	NODE_VARIABLE,
+
+	/* Node types without token */
+	NODE_ADDRESS,  /* such as [reg + num] */
+	NODE_ARGUMENT, /* has NODE_TYPE and NODE_NAME as children */
+	NODE_FUNCTION, /* has NODE_TYPE and NODE_NAME as children */
+	NODE_VARIABLE, /* has NODE_TYPE and NODE_NAME as children */
 	NODE_INSTRUCTION,
 	NODE_ROOT
 };
