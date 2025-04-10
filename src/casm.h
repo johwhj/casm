@@ -18,6 +18,6 @@
 #include <stdio.h>
 
 /* arch/x86-64.c */
-int codegen(FILE *, char *);
+int assemble(FILE *, char *);
 
 #endif
