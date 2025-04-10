@@ -89,7 +89,7 @@ token_type(char *buf)
 	if (*buf != '_' && !isalpha(*buf))
 		return TOKEN_NONE;
 	for (i = 0; keywords[i]; ++i)
-		if (strcmp(keyword[i], buf) == 0)
+		if (strcmp(keywords[i], buf) == 0)
 			return TOKEN_KEYWORD;
 	for (++buf; *buf; ++buf)
 		if (*buf != '_' && !isalnum(*buf))
