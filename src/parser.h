@@ -21,19 +21,19 @@
 #include <stddef.h>
 
 enum node_type {
-	NODE_ADD,     /* + in memory addressing */
-	NODE_SUB,     /* - in memory addressing */
-	NODE_MUL,     /* * in memory addressing */
-	NODE_TYPE,    /* function or argument type */
-	NODE_NAME,    /* function or argument name */
+	NODE_ADD,      /* + in memory addressing */
+	NODE_SUB,      /* - in memory addressing */
+	NODE_MUL,      /* * in memory addressing */
+	NODE_TYPE,     /* function or argument type */
+	NODE_NAME,     /* function or argument name */
 	NODE_LABEL,
-	NODE_ASSIGN,  /* `=` in initialized global variable */
+	NODE_ASSIGN,   /* `=` in initialized global variable */
 	NODE_NUMBER,
 	NODE_STRING,
 	NODE_OPCODE,
-	NODE_ADDRESS, /* such as [reg + num] */
-	NODE_ARGUMENT,
-	NODE_REGISTER,
+	NODE_ADDRESS,  /* such as [reg + num] */
+	NODE_ARGUMENT, /* has NODE_TYPE and NODE_NAME children */
+	NODE_REGISTER, /* CPU dependent */
 	NODE_FUNCTION,
 	NODE_VARIABLE,
 	NODE_INSTRUCTION,
@@ -48,11 +48,11 @@ struct node {
 };
 
 struct parser {
-	struct node *root;
+	const char **opt, **reg; /* operators and registers */
 };
 
-struct node *ast_new(struct lexer *);
-struct node *node_new(const char *, enum node_type, size_t, size_t);
-void node_free(struct node *);
+struct parser parser_new(const char **, const char **);
+struct node *parser_ast(struct parser *, struct lexer *);
+void parser_free(struct parser *);
 
 #endif

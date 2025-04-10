@@ -15,34 +15,13 @@
 #include "parser.h"
 #include <stdlib.h>
 
-struct node *
-node_new(const char *str, enum node_type type, size_t col, size_t row)
+struct parser
+parser_new(const char **opt, const char **reg)
 {
-	struct node *new;
-	size_t len;
+	struct parser par;
 
-	if ((new = malloc(sizeof(struct node))) == NULL)
-		return NULL;
-	if ((new->str = malloc((len = strlen(str)) + 1)) == NULL)
-		return NULL;
+	par.opt = opt;
+	par.reg = reg;
 
-	strncpy(new->str, str, len);
-	new->type = type;
-	new->col = col;
-	new->row = row;
-
-	return new;
-}
-
-void
-node_free(struct node *node)
-{
-	size_t i;
-
-	if (node == NULL)
-		return;
-	for (i = 0; i < node->len; ++i)
-		node_free(node->kid[i]);
-
-	free(node);
+	return par;
 }
