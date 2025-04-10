@@ -17,15 +17,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *keyword[] = {
+static char *keywords[] = {
 	/* preprocessor keywords */
 	"if",    "elif",   "else",   "endif",
 	"ifdef", "ifndef", "define", "undef"
 	"error", "include",
+
 	/* type qualifiers and type modifiers */
 	"const", "static", "signed", "unsigned",
+
 	/* types */
 	"char", "short", "int", "long", "float", "double",
+
 	/* end of array */
 	NULL,
 };
@@ -85,7 +88,7 @@ token_type(char *buf)
 		return TOKEN_NUMBER;
 	if (*buf != '_' && !isalpha(*buf))
 		return TOKEN_NONE;
-	for (i = 0; keyword[i]; ++i)
+	for (i = 0; keywords[i]; ++i)
 		if (strcmp(keyword[i], buf) == 0)
 			return TOKEN_KEYWORD;
 	for (++buf; *buf; ++buf)
