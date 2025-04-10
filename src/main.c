@@ -15,10 +15,12 @@
 #include "casm.h"
 #include "utils.h"
 
+#define NO_FILE "%s: %s: No such file or directory"
+
 int
 main(int argc, char *argv[])
 {
-	FILE *fp;
+	FILE *src;
 	int state;
 
 	state = 0;
@@ -26,9 +28,12 @@ main(int argc, char *argv[])
 	if (argc == 1)
 		return usage();
 	for (--argc, ++argv; argc; --argc, ++argv) {
-		fp = fopen(*argv, "r");
-		state |= codegen(fp, *argv);
-		fclose(fp);
+		if ((src = fopen(*argv, "r")) == NULL)
+			state |= error(NO_FILE, PROGNAME, *argv);
+		else
+			state |= assemble(src, *argv);
+
+		fclose(src);
 	}
 
 	return state;
