@@ -12,16 +12,10 @@
  * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#include "parser.h"
+#include "ast.h"
 #include <stdlib.h>
 
-struct parser
-parser_new(const char **opt, const char **reg)
+struct node *
+ast_new(const char **opt, const char **reg, struct lexer *lex)
 {
-	struct parser par;
-
-	par.opt = opt;
-	par.reg = reg;
-
-	return par;
 }

@@ -15,8 +15,6 @@
 #ifndef _PARSER_H
 #define _PARSER_H
 
-#define MAX_KID 4
-
 #include "lexer.h"
 #include <stddef.h>
 
@@ -36,10 +34,10 @@ enum node_type {
 	NODE_REGISTER, /* CPU dependent */
 
 	/* Node types without token */
-	NODE_ADDRESS,  /* such as [reg + num] */
-	NODE_ARGUMENT, /* has NODE_TYPE and NODE_NAME as children */
-	NODE_FUNCTION, /* has NODE_TYPE and NODE_NAME as children */
-	NODE_VARIABLE, /* has NODE_TYPE and NODE_NAME as children */
+	NODE_ADDRESS,  /* memory addressing */
+	NODE_ARGUMENT, /* function argument, has type and name as children*/
+	NODE_FUNCTION, /* function itself, has return type and name */
+	NODE_VARIABLE, /* global variable, has type, name and optional value */
 	NODE_INSTRUCTION,
 	NODE_ROOT
 };
@@ -47,16 +45,11 @@ enum node_type {
 struct node {
 	const char *str;
 	enum node_type type;
-	struct node *kid[MAX_KID];
-	size_t col, row, len;
+	struct node **kid;
+	size_t kid_num;
+	size_t col, row;
 };
 
-struct parser {
-	const char **opt, **reg; /* operators and registers */
-};
-
-struct parser parser_new(const char **, const char **);
-struct node *parser_ast(struct parser *, struct lexer *);
-void parser_free(struct parser *);
+struct node *ast_new(const char **, const char **, struct lexer *);
 
 #endif
