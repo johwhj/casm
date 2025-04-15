@@ -6,7 +6,7 @@ CASM is an assembler that works well with C.
 Features
 --------
 
-**Functional:**
+**Functional features:**
 
 - Parses C header files.
 - Supports C function definitions.
@@ -14,7 +14,7 @@ Features
 - Uses ELF file format.
 - Follows x86-64 System V AMD64 ABI.
 
-**Non-functional:**
+**Non-functional features:**
 
 - Written in standard C89.
 - Works on Unix-like systems.
