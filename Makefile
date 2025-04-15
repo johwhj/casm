@@ -10,7 +10,11 @@ casm:
 	$(CC) -o casm $(OBJ)
 
 clean:
-	rm -f casm a.out $(OBJ)
+	rm -f casm a.out test_* $(OBJ)
+
+check:
+	$(CC) $(CFLAGS) -o test_lexer src/lexer.c test/lexer.c
+	./test_lexer
 
 dist: clean
 	mkdir -p casm-$(VERSION)
