@@ -12,8 +12,8 @@
  * If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#ifndef _PARSER_H
-#define _PARSER_H
+#ifndef _AST_H
+#define _AST_H
 
 #include "lexer.h"
 #include <stddef.h>
@@ -34,7 +34,7 @@ enum node_type {
 	NODE_REGISTER, /* CPU dependent */
 
 	/* Node types without token */
-	NODE_ADDRESS,  /* memory addressing */
+	NODE_ADDRESS,  /* memory addressing, surrounded by [ and ] */
 	NODE_ARGUMENT, /* function argument, has type and name as children*/
 	NODE_FUNCTION, /* function itself, has return type and name */
 	NODE_VARIABLE, /* global variable, has type, name and optional value */
@@ -43,13 +43,15 @@ enum node_type {
 };
 
 struct node {
-	const char *str;
 	enum node_type type;
-	struct node **kid;
-	size_t kid_num;
+	const char *str;
 	size_t col, row;
+
+	struct node **kid;
+	size_t len;
 };
 
 struct node *ast_new(const char **, const char **, struct lexer *);
+void ast_free(struct node *);
 
 #endif
