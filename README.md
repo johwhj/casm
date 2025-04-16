@@ -84,7 +84,7 @@ Installation
 1. **Clone the repository:**
 
 ```sh
-git clone https://codeberg.org/johwhj/casm.git
+git clone https://github.com/johwhj/casm.git
 ```
 
 2. **Go to the project directory:**
