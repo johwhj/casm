@@ -30,8 +30,8 @@ enum node_type {
 	NODE_NAME,     /* variable, function, argument name */
 	NODE_LABEL,
 	NODE_ASSIGN,   /* `=` in initialized global variable */
-	NODE_OPCODE,   /* CPU dependent */
-	NODE_REGISTER, /* CPU dependent */
+	NODE_OPCODE,   /* CPU specific operator */
+	NODE_REGISTER, /* CPU specific register */
 
 	/* Node types without token */
 	NODE_ADDRESS,  /* memory addressing, surrounded by [ and ] */
