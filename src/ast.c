@@ -33,8 +33,11 @@ ast_free(struct node *root)
 		cur = stack[--top];
 		for (idx = 0; idx < cur->len; ++idx)
 			stack[top++] = cur->kid[idx];
+		if (cur->kid)
+			free(cur->kid);
+		if (cur->str)
+			free(cur->str);
 
-		free(cur->kid);
 		free(cur);
 	}
 }
