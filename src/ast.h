@@ -44,7 +44,7 @@ enum node_type {
 
 struct node {
 	enum node_type type;
-	const char *str;
+	char *str;
 	size_t col, row;
 
 	struct node **kid;
