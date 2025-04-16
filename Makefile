@@ -12,8 +12,8 @@ casm:
 clean:
 	rm -f casm a.out test_* $(OBJ)
 
-check:
-	$(CC) $(CFLAGS) -o test_lexer src/lexer.c test/lexer.c
+check: casm
+	$(CC) $(CFLAGS) -o test_lexer lexer.o test/lexer.c
 	./test_lexer
 
 dist: clean
@@ -22,10 +22,12 @@ dist: clean
 	tar -cf - casm-$(VERSION) | xz > casm-$(VERSION).tar.xz
 	rm -rf casm-$(VERSION)
 
-install:
+install: casm
 	mkdir -p $(PREFIX)/bin
 	cp -f casm $(PREFIX)/bin
 	chmod 755 $(PREFIX)/bin/casm
 
 uninstall:
 	rm -f $(PREFIX)/bin/casm
+
+.PHONY: all casm clean check dist install uninstall
