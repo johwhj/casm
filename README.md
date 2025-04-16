@@ -93,10 +93,10 @@ git clone https://codeberg.org/johwhj/casm.git
 cd casm
 ```
 
-3. **Build:**
+3. **Test:** (optional step)
 
 ```sh
-make x86-64
+make check
 ```
 
 4. **Install:** (may need root access)
