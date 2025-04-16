@@ -28,10 +28,10 @@ main(int argc, char *argv[])
 	if (argc == 1)
 		return usage();
 	for (--argc, ++argv; argc; --argc, ++argv) {
-		if ((src = fopen(*argv, "r")) == NULL)
-			state |= error(NO_FILE, PROGNAME, *argv);
-		else
+		if ((src = fopen(*argv, "r")))
 			state |= assemble(src, *argv);
+		else
+			state |= error(NO_FILE, PROGNAME, *argv);
 
 		fclose(src);
 	}

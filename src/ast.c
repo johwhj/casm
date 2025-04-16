@@ -14,7 +14,6 @@
 
 #include "ast.h"
 #include <stdlib.h>
-#include <string.h>
 
 struct node *
 ast_new(const char **opt, const char **reg, struct lexer *lex)
